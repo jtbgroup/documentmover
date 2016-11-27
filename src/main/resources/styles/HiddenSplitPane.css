@@ -3,7 +3,7 @@
     -fx-border-color: dodgerblue;
     -fx-border-width: 2px;
     -fx-border-radius: 15px;
-    -fx-padding: 20px;
+    -fx-padding: 10px;
 }
 #hiddenSplitter {
     -fx-background-color: null;
