@@ -56,7 +56,7 @@ public class MainPane extends StackPane {
 				if (newValue != null && !newValue.getValue().getFile().isDirectory()
 						&& FileUtils.getExtension(newValue.getValue().getFile()).equals("pdf")) {
 					LOG.debug(newValue.getValue().toString());
-					openNewTab(newValue.getValue().getFile());
+					openPDFTab(newValue.getValue().getFile());
 				}
 			}
 		});
@@ -120,24 +120,12 @@ public class MainPane extends StackPane {
 		return split;
 	}
 
-	private void openNewTab(File file) {
+	private void openPDFTab(File file) {
 
-		StackPane pdfPane = new StackPane();
-		// OpenViewerFX pdfViewer = new OpenViewerFX(pdfPane, null);
-		// pdfViewer.openDefaultFile(file.getAbsolutePath());
-
-		OpenViewerFX viewer = new OpenViewerFX(pdfPane, null);
-		viewer.getSwingGUI().enableDownloadBar(false, false);
-		viewer.setupViewer();
-
-		Object[] input = { file.getAbsolutePath() };// Or you could try creating
-													// a new file object with
-													// same path? Who knows,
-													// worth a try?
-		viewer.executeCommand(Commands.OPENFILE, input);
+		PDFViewer viewer = new PDFViewer(file);
 
 		Tab tab = new Tab(file.getName());
-		tab.setContent(pdfPane);
+		tab.setContent(viewer);
 
 		tabPane.getTabs().add(tab);
 		tabPane.getSelectionModel().select(tabPane.getTabs().size() - 1);
