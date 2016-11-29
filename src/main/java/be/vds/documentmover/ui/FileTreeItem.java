@@ -15,11 +15,11 @@ public class FileTreeItem extends TreeItem<DocMoverFile> {
 	public static Image folderCollapseImage = new Image("images/folder.png");
 	public static Image folderExpandImage = new Image("images/folder-open.png");
 	public static Image fileImage = new Image("/images/text-x-generic.png");
+	public static Image computerImage = new Image("/images/computer.png");
 
 	private boolean isLeaf;
 	private boolean isFirstTimeChildren = true;
 	private boolean isFirstTimeLeaf = true;
-	
 
 	public FileTreeItem(DocMoverFile f) {
 		super(f);
@@ -29,12 +29,13 @@ public class FileTreeItem extends TreeItem<DocMoverFile> {
 	private TreeItem<DocMoverFile> createNode(DocMoverFile f) {
 		FileTreeItem tip = new FileTreeItem(f);
 		return tip;
-
 	}
-	
+
 	private void decorate(DocMoverFile f) {
 		// test if this is a directory and set the icon
-		if (Files.isDirectory(f.getFile().toPath())) {
+		if (f.getFile() == null) {
+			this.setGraphic(new ImageView(computerImage));
+		} else if (Files.isDirectory(f.getFile().toPath())) {
 			this.setGraphic(new ImageView(folderCollapseImage));
 		} else {
 			this.setGraphic(new ImageView(fileImage));
@@ -44,7 +45,7 @@ public class FileTreeItem extends TreeItem<DocMoverFile> {
 
 		// set the value
 		setValue(f);
-		
+
 	}
 
 	@Override
@@ -60,14 +61,18 @@ public class FileTreeItem extends TreeItem<DocMoverFile> {
 	public boolean isLeaf() {
 		if (isFirstTimeLeaf) {
 			isFirstTimeLeaf = false;
-			isLeaf = getValue().getFile().isFile();
+			if(getValue().getFile() == null){
+				isLeaf=false;
+			}else{
+				isLeaf = getValue().getFile().isFile();
+			}
 		}
 		return isLeaf;
 	}
 
 	private ObservableList<TreeItem<DocMoverFile>> buildChildren(TreeItem<DocMoverFile> treeItem) {
 		DocMoverFile f = treeItem.getValue();
-		if (f == null) {
+		if (f == null || f.getFile() == null) {
 			return FXCollections.emptyObservableList();
 		}
 		if (f.getFile().isFile()) {
@@ -76,9 +81,9 @@ public class FileTreeItem extends TreeItem<DocMoverFile> {
 		File[] files = f.getFile().listFiles();
 		if (files != null) {
 			ObservableList<TreeItem<DocMoverFile>> children = FXCollections.observableArrayList();
-			
+
 			Arrays.sort(files);
-			
+
 			for (File childFile : files) {
 				children.add(createNode(new DocMoverFile(childFile)));
 			}

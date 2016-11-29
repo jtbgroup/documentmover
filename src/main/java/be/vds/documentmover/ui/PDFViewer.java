@@ -26,7 +26,7 @@ public class PDFViewer extends StackPane {
 
 	private void buildUI() {
 		viewer = new OpenViewerFX(this, null);
-		viewer.getSwingGUI().enableDownloadBar(false, false);
+//		viewer.getSwingGUI().enableDownloadBar(false, false);
 		viewer.setupViewer();
 	}
 }

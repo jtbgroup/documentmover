@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -22,6 +24,7 @@ public class ActionPane extends GridPane {
 	private SelectionListener destSelectionListener;
 	private TextField destFolderTf;
 	private TextField fileNameTf;
+	private File sourceFile;
 
 	public ActionPane() {
 		buildUI();
@@ -57,6 +60,7 @@ public class ActionPane extends GridPane {
 					TreeItem<DocMoverFile> oldValue, TreeItem<DocMoverFile> newValue) {
 				if (null != newValue) {
 					LOG.debug("Source changed to " + newValue.getValue().getFile());
+					handleSourceChange(newValue.getValue().getFile());
 				}
 			}
 		};
@@ -96,6 +100,14 @@ public class ActionPane extends GridPane {
 		this.getChildren().add(savePatternBtn);
 		this.getChildren().add(srcNameBtn);
 		this.getChildren().add(moveBtn);
+
+		moveBtn.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				moveFile();
+			}
+		});
 	}
 
 	public void registerAsSourceSelectionListener(SelectionObservable observable) {
@@ -104,6 +116,14 @@ public class ActionPane extends GridPane {
 
 	public void registerAsDestSelectionListener(SelectionObservable observable) {
 		observable.addSelectionListener(destSelectionListener);
+	}
+
+	private void handleSourceChange(File file) {
+		sourceFile = file;
+		if (null != file && !file.isDirectory()
+				&& (fileNameTf.getText() == null || fileNameTf.getText().trim().length() == 0)) {
+			fileNameTf.setText(file.getName());
+		}
 	}
 
 	private void handleDestinationChange(File file) {
@@ -118,7 +138,9 @@ public class ActionPane extends GridPane {
 
 		destFolderTf.setText(parentFolder);
 		fileNameTf.setText(fileName);
-
 	}
 
+	private void moveFile() {
+		System.out.println("move");
+	}
 }

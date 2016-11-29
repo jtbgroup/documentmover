@@ -1,6 +1,9 @@
 package be.vds.documentmover.ui;
 
 import java.io.File;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 
 import org.jpedal.examples.viewer.Commands;
 import org.jpedal.examples.viewer.OpenViewerFX;
@@ -98,7 +101,7 @@ public class MainPane extends StackPane {
 		// SOURCE
 		StackPane sourcePane = new StackPane();
 		Label sourceLabel = new Label("Source");
-		ftvSource = new FileTreeView("/");
+		ftvSource = new FileTreeView();
 		VBox box = new VBox(5, sourceLabel, ftvSource);
 		sourcePane.getChildren().add(box);
 		sourcePane.getStyleClass().add("rounded");
@@ -106,7 +109,7 @@ public class MainPane extends StackPane {
 		// DEST
 		StackPane destPane = new StackPane();
 		Label destLabel = new Label("Destination");
-		ftvDest = new FileTreeView("/");
+		ftvDest = new FileTreeView();
 		VBox box2 = new VBox(5, destLabel, ftvDest);
 		destPane.getChildren().add(box2);
 		destPane.getStyleClass().add("rounded");
