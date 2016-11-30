@@ -36,7 +36,7 @@ import javax.swing.ImageIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import be.vds.documentmover.DocumentMoverApp;
+import be.vds.documentmover.MoverApp;
 
 /**
  * This manages the different resources and the different path to them.
@@ -46,7 +46,7 @@ import be.vds.documentmover.DocumentMoverApp;
  */
 public class ResourceManager {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DocumentMoverApp.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MoverApp.class);
 	private static final String FILE_SEPARATOR = String
 			.valueOf(File.separatorChar);
 	private static Map<String, ImageIcon> imageIconsMap = new HashMap<String, ImageIcon>();

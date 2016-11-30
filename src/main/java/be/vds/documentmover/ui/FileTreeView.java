@@ -8,13 +8,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class FileTreeView extends TreeView<DocMoverFile> implements SelectionObservable {
+public class FileTreeView extends TreeView<DocMoverFile>  {
 	public static Image computerImage = new Image("/images/computer.png");
 	private FileTreeItem rootNode;
 
@@ -34,10 +35,10 @@ public class FileTreeView extends TreeView<DocMoverFile> implements SelectionObs
 		this.setRoot(rootNode);
 	}
 
-	public void addSelectionListener(SelectionListener selectionListener) {
-		this.getSelectionModel().selectedItemProperty().addListener(selectionListener);
+	public void addChangeListener(ChangeListener<TreeItem<DocMoverFile>> changeListener) {
+		this.getSelectionModel().selectedItemProperty().addListener(changeListener);
 	}
-
+	
 	public void selectFile(File file) {
 		List<File> files = new ArrayList<File>();
 		File iter = file;

@@ -30,6 +30,7 @@ public class MainPane extends StackPane {
 	private FileTreeView ftvDest;
 	private FileTreeView ftvSource;
 	private TabPane tabPane;
+	private PDFViewer pdfViewer;
 
 	public MainPane() {
 		buildUI();
@@ -49,20 +50,20 @@ public class MainPane extends StackPane {
 	}
 
 	private void registerListeners() {
-		actionPane.registerAsSourceSelectionListener(ftvSource);
-		actionPane.registerAsDestSelectionListener(ftvDest);
-		ftvSource.addSelectionListener(new SelectionListener() {
-
-			@Override
-			public void changed(ObservableValue<? extends TreeItem<DocMoverFile>> observable,
-					TreeItem<DocMoverFile> oldValue, TreeItem<DocMoverFile> newValue) {
-				if (newValue != null && !newValue.getValue().getFile().isDirectory()
-						&& FileUtils.getExtension(newValue.getValue().getFile()).equals("pdf")) {
-					LOG.debug(newValue.getValue().toString());
-					openPDFTab(newValue.getValue().getFile());
-				}
-			}
-		});
+//		actionPane.registerAsSourceSelectionListener(ftvSource);
+//		actionPane.registerAsDestSelectionListener(ftvDest);
+//		ftvSource.addSelectionListener(new SelectionListener() {
+//
+//			@Override
+//			public void changed(ObservableValue<? extends TreeItem<DocMoverFile>> observable,
+//					TreeItem<DocMoverFile> oldValue, TreeItem<DocMoverFile> newValue) {
+//				if (newValue != null && !newValue.getValue().getFile().isDirectory()
+//						&& FileUtils.getExtension(newValue.getValue().getFile()).equals("pdf")) {
+//					LOG.debug(newValue.getValue().toString());
+//					openPDFFile(newValue.getValue().getFile());
+//				}
+//			}
+//		});
 	}
 
 	private Region createActionsPane() {
@@ -123,15 +124,16 @@ public class MainPane extends StackPane {
 		return split;
 	}
 
-	private void openPDFTab(File file) {
-
-		PDFViewer viewer = new PDFViewer(file);
-
-		Tab tab = new Tab(file.getName());
-		tab.setContent(viewer);
-
-		tabPane.getTabs().add(tab);
-		tabPane.getSelectionModel().select(tabPane.getTabs().size() - 1);
+	private void openPDFFile(File file) {
+		if (pdfViewer == null) {
+			pdfViewer = new PDFViewer();
+			Tab pdfTab = new Tab(file.getName());
+			pdfTab.setContent(pdfViewer);
+			tabPane.getTabs().add(pdfTab);
+			tabPane.getSelectionModel().select(tabPane.getTabs().size() - 1);
+		}
+		
+		pdfViewer.loadFile(file);
 	}
 
 	public void selectSourceFile(File file) {

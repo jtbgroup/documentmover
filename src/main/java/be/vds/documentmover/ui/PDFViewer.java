@@ -11,12 +11,11 @@ public class PDFViewer extends StackPane {
 
 	private OpenViewerFX viewer;
 
-	public PDFViewer(File file) {
+	public PDFViewer() {
 		buildUI();
-		setFile(file);
 	}
 
-	private void setFile(File file) {
+	public void loadFile(File file) {
 		Object[] input = { file.getAbsolutePath() };// Or you could try creating
 		// a new file object with
 		// same path? Who knows,
@@ -26,7 +25,6 @@ public class PDFViewer extends StackPane {
 
 	private void buildUI() {
 		viewer = new OpenViewerFX(this, null);
-//		viewer.getSwingGUI().enableDownloadBar(false, false);
 		viewer.setupViewer();
 	}
 }
