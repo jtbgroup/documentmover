@@ -47,13 +47,54 @@ public class DocMoverViewModel {
 	}
 
 	public void loadFile(File file) {
-		if(file.isDirectory()){
+		if (file.isDirectory()) {
 			destinationFolder.setValue(file.getAbsolutePath());
-		}else{
+		} else {
 			destinationFolder.setValue(file.getParent());
-			String fileName = file.getName();
-			name.setValue(fileName.substring(0,fileName.lastIndexOf(".")));
-			extension.setValue(fileName.substring(fileName.lastIndexOf(".")+1));
+			// String fileName = file.getName();
+			// name.setValue(fileName.substring(0,fileName.lastIndexOf(".")));
+			// extension.setValue(fileName.substring(fileName.lastIndexOf(".")+1));
+
+			
+		}
+		
+		DocMoverParser parser = new DocMoverParser();
+		parser.parse(file);
+		destinationFolder.setValue(parser.getDestinationFolder());
+
+		if(parser.getDtg() != null){
+			dtg.setValue(parser.getDtg());
+		}
+		
+		if(parser.getSender() != null){
+			sender.setValue(parser.getSender());
+		}
+		
+		if(parser.getName() != null){
+			name.setValue(parser.getName());
+		}
+		
+		if(parser.getExtension() != null){
+			extension.setValue(parser.getExtension());
 		}
 	}
+
+	public boolean isFileDetailLoaded() {
+		return (dtg.isNotEmpty().getValue()) || (sender.isNotEmpty().getValue()) || (name.isNotEmpty().getValue())
+				|| (extension.isNotEmpty().getValue());
+	}
+
+	public File getDestFile() {
+		DocMoverParser parser = new DocMoverParser();
+		parser.setDestinationFolder(destinationFolder.getValue());
+		parser.setDtg(dtg.getValue());
+		parser.setSender(sender.getValue());
+		parser.setName(name.getValue());
+		parser.setExtension(extension.getValue());
+		
+		return parser.toFile();
+	}
+
+	
+
 }

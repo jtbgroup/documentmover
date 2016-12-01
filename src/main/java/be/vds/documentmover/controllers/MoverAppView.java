@@ -49,7 +49,7 @@ public class MoverAppView implements Initializable {
 					File newFile = newValue.getValue().getFile();
 					if (!newFile.isDirectory() && FileUtils.getExtension(newFile).equals("pdf")) {
 						openPDFFile(newFile);
-						actionPaneController.registerSourceFile(newFile);
+						actionPaneController.registerSrcFile(newFile);
 					}
 				}
 			}
@@ -62,7 +62,7 @@ public class MoverAppView implements Initializable {
 					TreeItem<DocMoverFile> oldValue, TreeItem<DocMoverFile> newValue) {
 				File newFile = newValue.getValue().getFile();
 				if (newValue != null) {
-						actionPaneController.registerSourceFile(newFile);
+						actionPaneController.registerDestFile(newFile);
 				}
 			}
 

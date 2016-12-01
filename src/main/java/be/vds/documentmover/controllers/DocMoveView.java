@@ -1,15 +1,21 @@
 package be.vds.documentmover.controllers;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.sun.org.apache.bcel.internal.classfile.SourceFile;
+
+import be.vds.documentmover.utils.FileUtils;
 import be.vds.documentmover.vm.DocMoverViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 
 public class DocMoveView {
-
+	private static final Logger LOG = LoggerFactory.getLogger(DocMoveView.class);
 	@FXML
 	private TextField destinationFolderTF;
 	@FXML
@@ -23,6 +29,7 @@ public class DocMoveView {
 	@FXML
 	private Button moveBtn;
 	private DocMoverViewModel docMoverViewModel;
+	private File sourceFile;
 
 	@FXML
 	void initialize() {
@@ -38,12 +45,26 @@ public class DocMoveView {
 		moveBtn.disableProperty().bind(docMoverViewModel.isLoginPossibleProperty().not());
 	}
 	
-	public void onLoginButtonPressed(){
-//		System.out.println(loginViewModel.passwordProperty());
+	public void onMoveButtonPressed(){
+		File destFile = docMoverViewModel.getDestFile();
+		LOG.info("Moving file " + sourceFile+"\r\n   to "+ destFile);
+//		try {
+//			FileUtils.moveFile(sourceFile, destFile);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
-	public void registerSourceFile(File file) {
-		docMoverViewModel.loadFile(file);
+	public void registerSrcFile(File sourceFile) {
+			this.sourceFile = sourceFile;
+			if(!docMoverViewModel.isFileDetailLoaded()){
+				docMoverViewModel.loadFile(sourceFile);
+			}
+	}
+
+	public void registerDestFile(File destFile) {
+		docMoverViewModel.loadFile(destFile);
 	}
 
 }
