@@ -19,16 +19,27 @@
     -fx-base: #395bae;
 }
 
-/* Component specific styles */
-
-
-.main-panel {
-    -fx-background-image: url("../images/background.jpg");
-}
-
 .hello-message {
     -fx-text-fill: #AA0000;
     -fx-font-weight: bold;
     -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+}
+
+.rounded {
+    -fx-border-color: dodgerblue;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+    -fx-padding: 10px;
+}
+#mainSplitter, #actionPane {
+    -fx-background-color: null;
+    -fx-padding: 10px;
+}
+#mainSplitter *.split-pane-divider,
+        #mainSplitter *.vertical-grabber,
+        #mainSplitter *.horizontal-grabber {
+    -fx-background-color: null;
+    -fx-border-color: null;
+    -fx-padding: 5px;
 }
 

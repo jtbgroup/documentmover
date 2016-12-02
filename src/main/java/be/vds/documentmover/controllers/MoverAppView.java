@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import be.vds.documentmover.ui.DocMoverFile;
 import be.vds.documentmover.ui.FileTreeView;
 import be.vds.documentmover.ui.PDFViewer;
+import be.vds.documentmover.ui.PreferenceDialog;
 import be.vds.documentmover.utils.ConfigurationHelper;
 import be.vds.documentmover.utils.FileUtils;
 import javafx.beans.value.ChangeListener;
@@ -99,5 +100,11 @@ public class MoverAppView implements Initializable {
 		}
 
 		pdfViewer.loadFile(file);
+	}
+	
+	@FXML
+	public void showPreferencesDialog(){
+		PreferenceDialog prefDialog = new PreferenceDialog();
+		prefDialog.show();
 	}
 }

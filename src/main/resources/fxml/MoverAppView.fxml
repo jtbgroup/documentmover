@@ -13,24 +13,34 @@
 <?import javafx.scene.control.TabPane?>
 <?import be.vds.documentmover.ui.FileTreeView?>
 <?import be.vds.documentmover.ui.ActionPane?>
+<?import javafx.scene.shape.Box?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
 
-<StackPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0"
-	xmlns:fx="http://javafx.com/fxml" fx:controller="be.vds.documentmover.controllers.MoverAppView">
+<StackPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0"
+	xmlns:fx="http://javafx.com/fxml" fx:controller="be.vds.documentmover.controllers.MoverAppView"
+	stylesheets="styles/styles.css">
 	<VBox>
 		<MenuBar>
 			<Menu text="File">
-				<MenuItem text="Preferences" />
+				<MenuItem text="Preferences" onAction="#showPreferencesDialog"/>
 			</Menu>
 		</MenuBar>
-		<SplitPane orientation="HORIZONTAL">
-			<VBox>
+		<SplitPane id="mainSplitter" orientation="HORIZONTAL" dividerPositions="0.3" mouseTransparent="false">
+			<VBox styleClass="rounded">
+				<Label text="Source" />
 				<FileTreeView fx:id="srcTreeView" />
+				<Box height="20" />
+				<Label text="Destination" />
 				<FileTreeView fx:id="destTreeView" />
 			</VBox>
-			<TabPane fx:id="tabPane" />
+			<TabPane fx:id="tabPane" styleClass="rounded" />
 		</SplitPane>
 
-		<fx:include fx:id="actionPane" source="DocMoverView.fxml" />
+		<StackPane id="actionPane">
+			<fx:include fx:id="actionPane" source="DocMoverView.fxml"
+				styleClass="rounded" />
+		</StackPane>
 	</VBox>
 
 </StackPane>

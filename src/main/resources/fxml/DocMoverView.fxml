@@ -17,29 +17,38 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.geometry.Insets?>
 
 <GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="be.vds.documentmover.controllers.DocMoveView">
+	fx:controller="be.vds.documentmover.controllers.DocMoveView" hgap="5" vgap="5">
+    
+    <padding>
+    	<Insets bottom="10.0" left="5.0" right="5.0" top="10.0"/>
+    </padding>
+	
 	<Label text="Destination Folder" GridPane.rowIndex="0"
 		GridPane.columnIndex="0" />
 	<TextField fx:id="destinationFolderTF" alignment="BOTTOM_RIGHT"
-		promptText="folder" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="7" />
+		promptText="folder" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="7"  />
 
 	<Label text="File Name" GridPane.rowIndex="1"
 		GridPane.columnIndex="0" />
-	<TextField fx:id="dtgTF" alignment="CENTER_RIGHT" promptText="DTG" prefWidth="80"
+	<TextField fx:id="dtgTF" alignment="CENTER_RIGHT" promptText="DTG" prefWidth="100"
 		GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.hgrow="NEVER" />
 	<Label text="-" GridPane.rowIndex="1" GridPane.columnIndex="2" />
 	<TextField fx:id="senderTF" alignment="CENTER_RIGHT"
-		promptText="Sender" prefWidth="150" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS"/>
+		promptText="Sender" GridPane.rowIndex="1" GridPane.columnIndex="3" GridPane.hgrow="ALWAYS"/>
 	<Label text="-" GridPane.rowIndex="1" GridPane.columnIndex="4" />
 	<TextField fx:id="nameTF" alignment="CENTER_RIGHT"
 		promptText="Name" GridPane.rowIndex="1" GridPane.columnIndex="5" GridPane.hgrow="ALWAYS"/>
 	<Label text="." GridPane.rowIndex="1" GridPane.columnIndex="6" />
 	<TextField fx:id="extensionTF" alignment="CENTER_RIGHT" prefWidth="60"
 		promptText="Ext" GridPane.rowIndex="1" GridPane.columnIndex="7"  GridPane.hgrow="NEVER"/>
-
+		<Button text="Source name" onAction="#onSourceButtonPressed" GridPane.rowIndex="1" GridPane.columnIndex="8"  GridPane.hgrow="NEVER"/>
+	
+		
 	<Button fx:id="moveBtn" mnemonicParsing="false" onAction="#onMoveButtonPressed"
 		text="MOVE" textAlignment="CENTER" GridPane.rowIndex="3"
-		GridPane.columnIndex="0" GridPane.columnSpan="8" GridPane.halignment="CENTER"/>
+		GridPane.columnIndex="0" GridPane.columnSpan="9" GridPane.halignment="CENTER"/>
+
 </GridPane>

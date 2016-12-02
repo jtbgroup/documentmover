@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	hgap="5" vgap="5">
+
+
+	<Label text="Source Folder" GridPane.rowIndex="0"
+		GridPane.columnIndex="0" />
+	<TextField fx:id="sourceFolderTF" alignment="BOTTOM_RIGHT"
+		promptText="folder" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+
+
+	<Label text="Destination Folder" GridPane.rowIndex="1"
+		GridPane.columnIndex="0" />
+	<TextField fx:id="destinationFolderTF" alignment="BOTTOM_RIGHT"
+		promptText="folder" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+
+
+	<GridPane GridPane.rowIndex="2" GridPane.columnIndex="0"
+		GridPane.columnSpan="2">
+		<Box GridPane.rowIndex="0" GridPane.columnIndex="0"
+			GridPane.hgrow="ALWAYS" />
+
+		<Button fx:id="saveBtn" mnemonicParsing="false" onAction="#onMoveSavePressed"
+			text="Save" textAlignment="CENTER" GridPane.rowIndex="3"
+			GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.halignment="CENTER" />
+
+		<Button fx:id="cancelBtn" mnemonicParsing="false"
+			onAction="#onCancelButtonPressed" text="Cancel" textAlignment="CENTER"
+			GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.hgrow="NEVER"
+			GridPane.halignment="CENTER" />
+	</GridPane>
+
+
+</GridPane>
