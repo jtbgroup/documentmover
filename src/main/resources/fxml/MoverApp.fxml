@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.StackPane?>
 
 <StackPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0"
-	xmlns:fx="http://javafx.com/fxml" fx:controller="be.vds.documentmover.controllers.MoverAppView"
+	xmlns:fx="http://javafx.com/fxml" fx:controller="be.vds.documentmover.controllers.MoverAppController"
 	stylesheets="styles/styles.css">
 	<VBox>
 		<MenuBar>
@@ -26,7 +26,7 @@
 				<MenuItem text="Preferences" onAction="#showPreferencesDialog"/>
 			</Menu>
 		</MenuBar>
-		<SplitPane id="mainSplitter" orientation="HORIZONTAL" dividerPositions="0.3" mouseTransparent="false">
+		<SplitPane styleClass="mainLayout" orientation="HORIZONTAL" dividerPositions="0.3" mouseTransparent="false">
 			<VBox styleClass="rounded">
 				<Label text="Source" />
 				<FileTreeView fx:id="srcTreeView" />
@@ -37,8 +37,8 @@
 			<TabPane fx:id="tabPane" styleClass="rounded" />
 		</SplitPane>
 
-		<StackPane id="actionPane">
-			<fx:include fx:id="actionPane" source="DocMoverView.fxml"
+		<StackPane styleClass="mainLayout" id="mainSplitter">
+			<fx:include fx:id="actionPane" source="ActionPane.fxml"
 				styleClass="rounded" />
 		</StackPane>
 	</VBox>

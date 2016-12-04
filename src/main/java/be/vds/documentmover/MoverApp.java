@@ -5,6 +5,7 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.vds.documentmover.controllers.MoverAppController;
 import be.vds.documentmover.ui.MainPane;
 import be.vds.documentmover.utils.ResourceManager;
 import javafx.application.Application;
@@ -21,18 +22,20 @@ public class MoverApp extends Application {
 		launch(args);
 	}
 
-	private MainPane mainPane;
 
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Hello World!");
 
-		final URL url = ResourceManager.getInstance().getResourceAsURL("fxml/MoverAppView.fxml");
+		final URL url = ResourceManager.getInstance().getResourceAsURL("fxml/MoverApp.fxml");
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
 		final Region root = (Region) fxmlLoader.load();
+		MoverAppController controller = fxmlLoader.getController();
+		controller.setStage(primaryStage);
 
 		Scene scene = new Scene(root, 1500, 1000);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
+	
 
 }

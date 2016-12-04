@@ -8,22 +8,29 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.vds.documentmover.MoverApp;
 import be.vds.documentmover.ui.DocMoverFile;
 import be.vds.documentmover.ui.FileTreeView;
 import be.vds.documentmover.ui.PDFViewer;
-import be.vds.documentmover.ui.PreferenceDialog;
 import be.vds.documentmover.utils.ConfigurationHelper;
 import be.vds.documentmover.utils.FileUtils;
+import be.vds.documentmover.utils.ResourceManager;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TreeItem;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-public class MoverAppView implements Initializable {
-	private static final Logger LOG = LoggerFactory.getLogger(MoverAppView.class);
+public class MoverAppController implements Initializable {
+	private static final Logger LOG = LoggerFactory.getLogger(MoverAppController.class);
 	@FXML
 	private FileTreeView srcTreeView;
 	@FXML
@@ -31,9 +38,10 @@ public class MoverAppView implements Initializable {
 	@FXML
 	private TabPane tabPane;
 	@FXML
-	private DocMoveView actionPaneController;
+	private ActionPaneController actionPaneController;
 
 	private PDFViewer pdfViewer;
+	private Stage stage;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -61,12 +69,13 @@ public class MoverAppView implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends TreeItem<DocMoverFile>> observable,
 					TreeItem<DocMoverFile> oldValue, TreeItem<DocMoverFile> newValue) {
-				File newFile = newValue.getValue().getFile();
 				if (newValue != null) {
+					File newFile = newValue.getValue().getFile();
+					if (newValue != null) {
 						actionPaneController.registerDestFile(newFile);
+					}
 				}
 			}
-
 		});
 	}
 
@@ -101,10 +110,34 @@ public class MoverAppView implements Initializable {
 
 		pdfViewer.loadFile(file);
 	}
-	
+
 	@FXML
-	public void showPreferencesDialog(){
-		PreferenceDialog prefDialog = new PreferenceDialog();
-		prefDialog.show();
+	public void showPreferencesDialog() {
+		try {
+			final URL url = ResourceManager.getInstance().getResourceAsURL("fxml/PreferencesDlg.fxml");
+			FXMLLoader loader = new FXMLLoader(url);
+			Region page = loader.load();
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Edit Person");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(stage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+			dialogStage.setHeight(500);
+			dialogStage.setWidth(500);
+
+			PreferencesController controller = loader.getController();
+			controller.setStage(dialogStage);
+
+			// Show the dialog and wait until the user closes it
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 }

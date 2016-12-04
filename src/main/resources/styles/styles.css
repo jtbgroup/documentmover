@@ -1,10 +1,10 @@
 /* Application wide styles */
 
 .label {
-    -fx-font-size: 12px;
+    -fx-font-size: 12.0px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
 .button {
@@ -12,7 +12,7 @@
     -fx-font-family: "Arial Narrow";
     -fx-font-weight: bold;
     -fx-background-color: linear-gradient(#61a2b1, #2A5058);
-    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
 }
 
 .button:hover{
@@ -22,24 +22,31 @@
 .hello-message {
     -fx-text-fill: #AA0000;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow( gaussian , rgba(255,255,255,0.5) , 0,0,0,1 );
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
 }
 
 .rounded {
     -fx-border-color: dodgerblue;
-    -fx-border-width: 2px;
-    -fx-border-radius: 15px;
-    -fx-padding: 10px;
+    -fx-border-width: 2.0px;
+    -fx-border-radius: 15.0px;
+    -fx-padding: 10.0px;
 }
-#mainSplitter, #actionPane {
-    -fx-background-color: null;
-    -fx-padding: 10px;
+
+.mainLayout{
+	-fx-background-color: #FFFFFF;
+    -fx-padding: 10.0px;
 }
+
+
 #mainSplitter *.split-pane-divider,
         #mainSplitter *.vertical-grabber,
         #mainSplitter *.horizontal-grabber {
-    -fx-background-color: null;
-    -fx-border-color: null;
-    -fx-padding: 5px;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #FFFFFF;
+    -fx-padding: 5.0px;
 }
+
+.autofill-text {
+	    -fx-skin: "np.com.ngopal.control.AutoFillTextBoxSkin";
+	}
 

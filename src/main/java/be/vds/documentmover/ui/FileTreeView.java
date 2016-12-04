@@ -10,12 +10,15 @@ import java.util.List;
 
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
-public class FileTreeView extends TreeView<DocMoverFile>  {
+public class FileTreeView extends TreeView<DocMoverFile> {
 	public static Image computerImage = new Image("/images/computer.png");
 	private FileTreeItem rootNode;
 
@@ -33,12 +36,33 @@ public class FileTreeView extends TreeView<DocMoverFile>  {
 			rootNode.getChildren().add(treeNode);
 		}
 		this.setRoot(rootNode);
+
+		registerRefreshEvent();
+
+	}
+
+	private void registerRefreshEvent() {
+		final EventHandler<KeyEvent> refreshKeyEventHandler = new EventHandler<KeyEvent>() {
+			public void handle(final KeyEvent keyEvent) {
+				if (keyEvent.getCode() == KeyCode.F5) {
+					System.out.println("refresh");
+					TreeItem<DocMoverFile> selectedItem = getSelectionModel().getSelectedItem();
+					File selectedFile = selectedItem.getValue().getFile();
+					if (selectedFile.isDirectory()) {
+						FileTreeItem item = (FileTreeItem)selectedItem;
+						item.refresh();
+					}
+				}
+			}
+		};
+		this.addEventHandler(KeyEvent.KEY_PRESSED, refreshKeyEventHandler);
+
 	}
 
 	public void addChangeListener(ChangeListener<TreeItem<DocMoverFile>> changeListener) {
 		this.getSelectionModel().selectedItemProperty().addListener(changeListener);
 	}
-	
+
 	public void selectFile(File file) {
 		List<File> files = new ArrayList<File>();
 		File iter = file;

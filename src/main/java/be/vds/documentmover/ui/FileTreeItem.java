@@ -45,7 +45,6 @@ public class FileTreeItem extends TreeItem<DocMoverFile> {
 
 		// set the value
 		setValue(f);
-
 	}
 
 	@Override
@@ -90,6 +89,12 @@ public class FileTreeItem extends TreeItem<DocMoverFile> {
 			return children;
 		}
 		return FXCollections.emptyObservableList();
+	}
+
+	public void refresh() {
+		getChildren().clear();
+		isFirstTimeChildren = true;
+		getChildren();
 	}
 
 }

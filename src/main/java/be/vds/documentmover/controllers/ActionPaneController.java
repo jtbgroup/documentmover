@@ -1,35 +1,46 @@
 package be.vds.documentmover.controllers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.vds.documentmover.utils.FileUtils;
+import be.vds.documentmover.utils.PreferencesHelper;
 import be.vds.documentmover.vm.DocMoverViewModel;
+import be.vds.documentmover.vm.PreferencesViewModel;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import np.com.ngopal.control.AutoFillTextBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
-public class DocMoveView {
-	private static final Logger LOG = LoggerFactory.getLogger(DocMoveView.class);
+public class ActionPaneController {
+	private static final Logger LOG = LoggerFactory.getLogger(ActionPaneController.class);
 	@FXML
 	private TextField destinationFolderTF;
 	@FXML
 	private TextField dtgTF;
 	@FXML
-	private TextField senderTF;
+	private AutoFillTextBox<String> senderAfTf;
 	@FXML
 	private TextField nameTF;
 	@FXML
 	private TextField extensionTF;
 	@FXML
 	private Button moveBtn;
+	@FXML
+	private Button addSenderBtn;
 	private DocMoverViewModel docMoverViewModel;
 	private File sourceFile;
+	private PreferencesViewModel preferencesViewModel = PreferencesViewModel.getInstance();;
 
 	@FXML
 	void initialize() {
@@ -39,17 +50,24 @@ public class DocMoveView {
 		// Connect the ViewModel
 		destinationFolderTF.textProperty().bindBidirectional(docMoverViewModel.destinationFolderProperty());
 		dtgTF.textProperty().bindBidirectional(docMoverViewModel.dtgProperty());
-		senderTF.textProperty().bindBidirectional(docMoverViewModel.senderProperty());
+		// senderCb.textProperty().bindBidirectional(docMoverViewModel.senderProperty());
+		senderAfTf.getTextbox().textProperty().bindBidirectional(docMoverViewModel.senderProperty());
 		nameTF.textProperty().bindBidirectional(docMoverViewModel.nameProperty());
 		extensionTF.textProperty().bindBidirectional(docMoverViewModel.extensionProperty());
 		moveBtn.disableProperty().bind(docMoverViewModel.isLoginPossibleProperty().not());
+
+		fillSenderComboBox(preferencesViewModel.itemsProperty());
+	}
+
+	private void fillSenderComboBox(ObservableList<String> senderList) {
+		senderAfTf.setData(senderList);
 	}
 
 	@FXML
 	public void onSourceButtonPressed() {
 		docMoverViewModel.loadFile(sourceFile);
 	}
-	
+
 	@FXML
 	public void onMoveButtonPressed() {
 		File destFile = docMoverViewModel.getDestFile();
@@ -79,20 +97,44 @@ public class DocMoveView {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.isPresent() && result.get() == ButtonType.OK) {
-//			try {
-
-//				FileUtils.moveFile(sourceFile, destFile);
+			try {
+				FileUtils.moveFile(sourceFile, destFile);
 				Alert a = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Info");
 				alert.setHeaderText(null);
 				alert.setContentText("File has been moved");
-//			} catch (IOException e1) {
-//				e1.printStackTrace();
-//				Alert a = new Alert(AlertType.ERROR);
-//				alert.setTitle("Error");
-//				alert.setHeaderText(null);
-//				alert.setContentText(e1.getMessage());
-//			}
+				alert.show();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+				Alert a = new Alert(AlertType.ERROR);
+				alert.setTitle("Error");
+				alert.setHeaderText(null);
+				alert.setContentText(e1.getMessage());
+				alert.show();
+			}
+		}
+	}
+
+	@FXML
+	public void onAddSenderPressed() {
+		String sender = senderAfTf.getText();
+		LOG.debug("You are about to store sender " + sender);
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText(null);
+		alert.setContentText("You are about to store sender " + sender);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+
+			try {
+				preferencesViewModel.itemsProperty().add(sender);
+				preferencesViewModel.savePreferences();
+				fillSenderComboBox(preferencesViewModel.itemsProperty());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}
