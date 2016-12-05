@@ -2,6 +2,8 @@ package be.vds.documentmover.controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import be.vds.documentmover.utils.PreferencesHelper;
 import be.vds.documentmover.vm.DocMoverViewModel;
 import be.vds.documentmover.vm.PreferencesViewModel;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -40,7 +43,8 @@ public class ActionPaneController {
 	private Button addSenderBtn;
 	private DocMoverViewModel docMoverViewModel;
 	private File sourceFile;
-	private PreferencesViewModel preferencesViewModel = PreferencesViewModel.getInstance();;
+	private PreferencesViewModel preferencesViewModel = PreferencesViewModel.getInstance();
+	private List<DocMoverListener> listeners=new ArrayList<DocMoverListener>();
 
 	@FXML
 	void initialize() {
@@ -99,6 +103,9 @@ public class ActionPaneController {
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			try {
 				FileUtils.moveFile(sourceFile, destFile);
+				
+				notifyListeners(sourceFile, destFile);
+				
 				Alert a = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Info");
 				alert.setHeaderText(null);
@@ -113,6 +120,16 @@ public class ActionPaneController {
 				alert.show();
 			}
 		}
+	}
+
+	private void notifyListeners(File src, File dest) {
+		for (DocMoverListener listener : listeners) {
+			listener.docFileMoved(src, dest);
+		}
+	}
+	
+	public void addDocMoverListener(DocMoverListener docMoverListener){
+		listeners.add(docMoverListener);
 	}
 
 	@FXML

@@ -7,13 +7,20 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.sun.xml.internal.txw2.Document;
+
+import be.vds.documentmover.utils.FileUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -44,19 +51,49 @@ public class FileTreeView extends TreeView<DocMoverFile> {
 	private void registerRefreshEvent() {
 		final EventHandler<KeyEvent> refreshKeyEventHandler = new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.F5) {
-					System.out.println("refresh");
-					TreeItem<DocMoverFile> selectedItem = getSelectionModel().getSelectedItem();
-					File selectedFile = selectedItem.getValue().getFile();
-					if (selectedFile.isDirectory()) {
-						FileTreeItem item = (FileTreeItem)selectedItem;
-						item.refresh();
-					}
+				TreeItem<DocMoverFile> selectedItem = getSelectionModel().getSelectedItem();
+				File selectedFile = selectedItem.getValue().getFile();
+				if (keyEvent.getCode() == KeyCode.F5 && selectedFile.isDirectory()) {
+					refreshItem(selectedItem);
+				}
+
+				if (keyEvent.getCode() == KeyCode.DELETE && selectedFile.isFile()) {
+					deleteFile(selectedItem);
 				}
 			}
 		};
 		this.addEventHandler(KeyEvent.KEY_PRESSED, refreshKeyEventHandler);
+	}
+	
+	private void refreshItem(TreeItem<DocMoverFile> selectedItem) {
+		FileTreeItem item = (FileTreeItem) selectedItem;
+		item.refresh();
+	}
+	
+	public void refreshSelectedNode() {
+		TreeItem<DocMoverFile> itemToRefresh = this.getSelectionModel().getSelectedItem();
+		if(itemToRefresh.isLeaf()){
+			itemToRefresh = itemToRefresh.getParent();
+		}
+		
+		((FileTreeItem)itemToRefresh).refresh();
+	}
 
+	private void deleteFile(TreeItem<DocMoverFile> selectedItem) {
+
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Confirmation");
+		alert.setHeaderText(null);
+		alert.setContentText("You are about to delete file \r\n " + selectedItem.getValue().getFile());
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			TreeItem<DocMoverFile> parent = selectedItem.getParent();
+			FileUtils.deleteFile(selectedItem.getValue().getFile());
+			FileTreeItem item = (FileTreeItem) parent;
+			item.refresh();
+			selectFile(parent.getValue().getFile());
+		}
 	}
 
 	public void addChangeListener(ChangeListener<TreeItem<DocMoverFile>> changeListener) {

@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import be.vds.documentmover.controllers.MoverAppController;
-import be.vds.documentmover.ui.MainPane;
 import be.vds.documentmover.utils.ResourceManager;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

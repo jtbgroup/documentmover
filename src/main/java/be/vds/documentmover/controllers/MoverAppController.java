@@ -77,6 +77,14 @@ public class MoverAppController implements Initializable {
 				}
 			}
 		});
+		
+		actionPaneController.addDocMoverListener(new DocMoverListener() {
+			@Override
+			public void docFileMoved(File src, File dest) {
+				destTreeView.refreshSelectedNode();
+				srcTreeView.refreshSelectedNode();
+			}
+		});
 	}
 
 	private void loadInitialValues() {
