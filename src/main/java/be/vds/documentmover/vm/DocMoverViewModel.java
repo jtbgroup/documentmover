@@ -18,8 +18,8 @@ public class DocMoverViewModel {
 
 	public DocMoverViewModel() {
 		// Logic to check, whether the login is possible or not
-		movePossible.bind(dtg.isNotEmpty().and(name.isNotEmpty()
-				.and(extension.isNotEmpty().and(sender.isNotEmpty().and(destinationFolder.isNotEmpty())))));
+		movePossible.bind(name.isNotEmpty()
+				.and(extension.isNotEmpty().and(sender.isNotEmpty().and(destinationFolder.isNotEmpty()))));
 	}
 
 	public StringProperty destinationFolderProperty() {

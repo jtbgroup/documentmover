@@ -40,7 +40,7 @@
 	<TextField fx:id="dtgTF" alignment="CENTER_RIGHT" promptText="DTG"
 		prefWidth="100" GridPane.rowIndex="1" GridPane.columnIndex="1"
 		GridPane.hgrow="NEVER" />
-	<Label text="-" GridPane.rowIndex="1" GridPane.columnIndex="2" />
+	<Label text="_" GridPane.rowIndex="1" GridPane.columnIndex="2" />
 	<AutoFillTextBox fx:id="senderAfTf" styleClass="autofill-text"
 		prefWidth="500" GridPane.rowIndex="1" GridPane.columnIndex="3"
 		GridPane.hgrow="SOMETIMES" />
@@ -48,7 +48,7 @@
 		GridPane.hgrow="NEVER"/>
 	
 	
-	<Label text="-" GridPane.rowIndex="1" GridPane.columnIndex="5" />
+	<Label text="_" GridPane.rowIndex="1" GridPane.columnIndex="5" />
 	<TextField fx:id="nameTF" alignment="CENTER_RIGHT"
 		promptText="Name" GridPane.rowIndex="1" GridPane.columnIndex="6"
 		GridPane.hgrow="ALWAYS" />

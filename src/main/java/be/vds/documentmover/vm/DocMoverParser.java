@@ -91,7 +91,13 @@ public class DocMoverParser {
 	}
 
 	public File toFile() {
-		return new File(destinationFolder + File.separatorChar + dtg + "-" + sender + "-" + name + "." + extension);
+		StringBuilder sb = new StringBuilder(destinationFolder);
+		sb.append(File.separatorChar);
+		if(null!=dtg && dtg.trim().length()>0){
+			sb.append(dtg).append("_");
+		}
+		sb.append(sender).append("_").append(name).append(".").append(extension);
+		return new File(sb.toString());
 	}
 
 }

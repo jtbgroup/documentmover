@@ -42,6 +42,7 @@ public class MoverAppController implements Initializable {
 
 	private PDFViewer pdfViewer;
 	private Stage stage;
+	private Tab pdfTab;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -77,7 +78,7 @@ public class MoverAppController implements Initializable {
 				}
 			}
 		});
-		
+
 		actionPaneController.addDocMoverListener(new DocMoverListener() {
 			@Override
 			public void docFileMoved(File src, File dest) {
@@ -110,12 +111,13 @@ public class MoverAppController implements Initializable {
 
 		if (pdfViewer == null) {
 			pdfViewer = new PDFViewer();
-			Tab pdfTab = new Tab(file.getName());
+			pdfTab = new Tab();
 			pdfTab.setContent(pdfViewer);
 			tabPane.getTabs().add(pdfTab);
 			tabPane.getSelectionModel().select(tabPane.getTabs().size() - 1);
 		}
 
+		pdfTab.setText(file.getName());
 		pdfViewer.loadFile(file);
 	}
 

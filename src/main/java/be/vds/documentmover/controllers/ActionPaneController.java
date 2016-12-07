@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import be.vds.documentmover.ui.DocMoverFile;
 import be.vds.documentmover.utils.FileUtils;
 import be.vds.documentmover.utils.PreferencesHelper;
 import be.vds.documentmover.vm.DocMoverViewModel;
@@ -16,14 +17,18 @@ import be.vds.documentmover.vm.PreferencesViewModel;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import np.com.ngopal.control.AutoFillTextBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeItem;
 
 public class ActionPaneController {
 	private static final Logger LOG = LoggerFactory.getLogger(ActionPaneController.class);
@@ -61,6 +66,19 @@ public class ActionPaneController {
 		moveBtn.disableProperty().bind(docMoverViewModel.isLoginPossibleProperty().not());
 
 		fillSenderComboBox(preferencesViewModel.itemsProperty());
+		
+		registerListeners();
+	}
+
+	private void registerListeners() {
+		final EventHandler<KeyEvent> moveKeyEventHandler = new EventHandler<KeyEvent>() {
+			public void handle(final KeyEvent keyEvent) {
+				if (keyEvent.getCode() == KeyCode.ENTER ) {
+					onMoveButtonPressed();
+				}
+			}
+		};
+		moveBtn.addEventHandler(KeyEvent.KEY_PRESSED, moveKeyEventHandler);
 	}
 
 	private void fillSenderComboBox(ObservableList<String> senderList) {
