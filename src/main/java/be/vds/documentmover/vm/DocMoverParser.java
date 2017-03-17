@@ -60,7 +60,7 @@ public class DocMoverParser {
 			destinationFolder =  file.getParent();
 			String fileName = file.getName();
 
-			Pattern p = Pattern.compile("(\\w*)\\s*-\\s*(\\w*)\\s*-\\s*(.*)\\s*\\.(.*)");
+			Pattern p = Pattern.compile("(\\w*)\\s*_\\s*(\\w*)\\s*_\\s*(.*)\\s*\\.(.*)");
 			Matcher m = p.matcher(fileName);
 			if (m.matches()) {
 				extension = m.group(4).trim();

@@ -49,7 +49,7 @@ public class ActionPaneController {
 	private DocMoverViewModel docMoverViewModel;
 	private File sourceFile;
 	private PreferencesViewModel preferencesViewModel = PreferencesViewModel.getInstance();
-	private List<DocMoverListener> listeners=new ArrayList<DocMoverListener>();
+	private List<DocMoverListener> listeners = new ArrayList<DocMoverListener>();
 
 	@FXML
 	void initialize() {
@@ -66,14 +66,14 @@ public class ActionPaneController {
 		moveBtn.disableProperty().bind(docMoverViewModel.isLoginPossibleProperty().not());
 
 		fillSenderComboBox(preferencesViewModel.itemsProperty());
-		
+
 		registerListeners();
 	}
 
 	private void registerListeners() {
 		final EventHandler<KeyEvent> moveKeyEventHandler = new EventHandler<KeyEvent>() {
 			public void handle(final KeyEvent keyEvent) {
-				if (keyEvent.getCode() == KeyCode.ENTER ) {
+				if (keyEvent.getCode() == KeyCode.ENTER) {
 					onMoveButtonPressed();
 				}
 			}
@@ -121,9 +121,9 @@ public class ActionPaneController {
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			try {
 				FileUtils.moveFile(sourceFile, destFile);
-				
+
 				notifyListeners(sourceFile, destFile);
-				
+
 				Alert a = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Info");
 				alert.setHeaderText(null);
@@ -145,8 +145,8 @@ public class ActionPaneController {
 			listener.docFileMoved(src, dest);
 		}
 	}
-	
-	public void addDocMoverListener(DocMoverListener docMoverListener){
+
+	public void addDocMoverListener(DocMoverListener docMoverListener) {
 		listeners.add(docMoverListener);
 	}
 
@@ -182,7 +182,9 @@ public class ActionPaneController {
 	}
 
 	public void registerDestFile(File destFile) {
-		docMoverViewModel.loadFile(destFile);
+		if (destFile != null) {
+			docMoverViewModel.loadFile(destFile);
+		}
 	}
 
 }
