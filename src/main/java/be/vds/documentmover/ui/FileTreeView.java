@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sun.xml.internal.txw2.Document;
 
+import be.vds.documentmover.controllers.MoverAppController;
 import be.vds.documentmover.utils.FileUtils;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ObservableList;
@@ -26,15 +30,23 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class FileTreeView extends TreeView<DocMoverFile> {
+	private static final Logger LOG = LoggerFactory.getLogger(MoverAppController.class);
 	public static Image computerImage = new Image("/images/computer.png");
 	private FileTreeItem rootNode;
 
 	public FileTreeView() {
 		super();
+		reloadRootNode();
+		registerRefreshEvent();
+
+	}
+	
+	public void reloadRootNode(){
 		String hostName = "computer";
 		try {
 			hostName = InetAddress.getLocalHost().getHostName();
 		} catch (UnknownHostException x) {
+			LOG.error(x.getMessage());
 		}
 		rootNode = new FileTreeItem(new DocMoverFile(hostName));
 		Iterable<Path> rootDirectories = FileSystems.getDefault().getRootDirectories();
@@ -43,9 +55,6 @@ public class FileTreeView extends TreeView<DocMoverFile> {
 			rootNode.getChildren().add(treeNode);
 		}
 		this.setRoot(rootNode);
-
-		registerRefreshEvent();
-
 	}
 
 	private void registerRefreshEvent() {
@@ -64,19 +73,19 @@ public class FileTreeView extends TreeView<DocMoverFile> {
 		};
 		this.addEventHandler(KeyEvent.KEY_PRESSED, refreshKeyEventHandler);
 	}
-	
+
 	private void refreshItem(TreeItem<DocMoverFile> selectedItem) {
 		FileTreeItem item = (FileTreeItem) selectedItem;
 		item.refresh();
 	}
-	
+
 	public void refreshSelectedNode() {
 		TreeItem<DocMoverFile> itemToRefresh = this.getSelectionModel().getSelectedItem();
-		if(itemToRefresh.isLeaf()){
+		if (null != itemToRefresh && itemToRefresh.isLeaf()) {
 			itemToRefresh = itemToRefresh.getParent();
 		}
-		
-		((FileTreeItem)itemToRefresh).refresh();
+
+		((FileTreeItem) itemToRefresh).refresh();
 	}
 
 	private void deleteFile(TreeItem<DocMoverFile> selectedItem) {
@@ -116,14 +125,16 @@ public class FileTreeView extends TreeView<DocMoverFile> {
 	}
 
 	private TreeItem<DocMoverFile> openNode(TreeItem<DocMoverFile> node, File file) {
-		ObservableList<TreeItem<DocMoverFile>> list = node.getChildren();
-		for (TreeItem<DocMoverFile> treeItem : list) {
-			if (treeItem.getValue().getFile().equals(file)) {
-				this.getSelectionModel().select(treeItem);
-				treeItem.setExpanded(true);
-				int idx = this.getSelectionModel().getSelectedIndex();
-				this.scrollTo(idx);
-				return treeItem;
+		if (null != node) {
+			ObservableList<TreeItem<DocMoverFile>> list = node.getChildren();
+			for (TreeItem<DocMoverFile> treeItem : list) {
+				if (treeItem.getValue().getFile().equals(file)) {
+					this.getSelectionModel().select(treeItem);
+					treeItem.setExpanded(true);
+					int idx = this.getSelectionModel().getSelectedIndex();
+					this.scrollTo(idx);
+					return treeItem;
+				}
 			}
 		}
 		return null;

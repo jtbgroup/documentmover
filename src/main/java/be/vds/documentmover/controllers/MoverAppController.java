@@ -57,7 +57,7 @@ public class MoverAppController implements Initializable {
 					TreeItem<DocMoverFile> oldValue, TreeItem<DocMoverFile> newValue) {
 				if (newValue != null) {
 					File newFile = newValue.getValue().getFile();
-					if (!newFile.isDirectory() && FileUtils.getExtension(newFile).equals("pdf")) {
+					if (newFile != null && !newFile.isDirectory() && FileUtils.getExtension(newFile).equals("pdf")) {
 						openPDFFile(newFile);
 						actionPaneController.registerSrcFile(newFile);
 					}
@@ -92,10 +92,7 @@ public class MoverAppController implements Initializable {
 		try {
 			ConfigurationHelper.getInstance().loadConfig();
 
-			String dest = ConfigurationHelper.getInstance().getDestinationFolder();
-			if (null != dest) {
-				destTreeView.selectFile(new File(dest));
-			}
+			loadDestInitialValue();
 
 			String src = ConfigurationHelper.getInstance().getSourceFolder();
 			if (null != src) {
@@ -104,6 +101,13 @@ public class MoverAppController implements Initializable {
 
 		} catch (IOException e) {
 			LOG.error(e.getMessage());
+		}
+	}
+
+	private void loadDestInitialValue() {
+		String dest = ConfigurationHelper.getInstance().getDestinationFolder();
+		if (null != dest) {
+			destTreeView.selectFile(new File(dest));
 		}
 	}
 
@@ -149,5 +153,11 @@ public class MoverAppController implements Initializable {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	@FXML
+	public void onReloadDestPressed() {
+		destTreeView.reloadRootNode();
+		loadDestInitialValue();
 	}
 }

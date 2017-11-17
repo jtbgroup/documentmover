@@ -30,6 +30,7 @@
 				<FileTreeView fx:id="srcTreeView" />
 				<Box height="20" />
 				<Label text="Destination" />
+				<Button fx:id="reloadDestBtn" text="RAS" onAction="#onReloadDestPressed" />
 				<FileTreeView fx:id="destTreeView" />
 			</VBox>
 			<TabPane fx:id="tabPane" styleClass="rounded" />

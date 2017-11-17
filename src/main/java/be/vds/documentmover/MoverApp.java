@@ -23,7 +23,7 @@ public class MoverApp extends Application {
 
 
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Hello World!");
+		primaryStage.setTitle("Document mover");
 
 		final URL url = ResourceManager.getInstance().getResourceAsURL("fxml/MoverApp.fxml");
 		final FXMLLoader fxmlLoader = new FXMLLoader(url);
